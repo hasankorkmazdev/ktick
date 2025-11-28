@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --radius: 0.5rem;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+:root {
+  --background: 0.01 86.62% 43.91%;
+  --foreground: 78.28 0.01% 3.94%;
+  --card: 60 100% 100%;
+  --card-foreground: 78.28 0.01% 3.94%;
+  --popover: 60 100% 100%;
+  --popover-foreground: 78.28 0.01% 3.94%;
+  --primary: 78.69 0.01% 9.05%;
+  --primary-foreground: 78.28 0.26% 98.02%;
+  --secondary: 78.41 0.13% 96.06%;
+  --secondary-foreground: 78.69 0.01% 9.05%;
+  --muted: 78.41 0.13% 96.06%;
+  --muted-foreground: 78.28 0.01% 45.15%;
+  --accent: 78.41 0.13% 96.06%;
+  --accent-foreground: 78.69 0.01% 9.05%;
+  --destructive: 358.72 100% 46.12%;
+  --border: 78.33 0.05% 89.81%;
+  --input: 78.33 0.05% 89.81%;
+  --ring: 78.46 0.01% 63.02%;
+  --sidebar: 78.28 0.26% 98.02%;
+  --sidebar-foreground: 78.28 0.01% 3.94%;
+  --sidebar-primary: 78.69 0.01% 9.05%;
+  --sidebar-primary-foreground: 78.28 0.26% 98.02%;
+  --sidebar-accent: 78.41 0.13% 96.06%;
+  --sidebar-accent-foreground: 78.69 0.01% 9.05%;
+  --sidebar-border: 78.33 0.05% 89.81%;
+  --sidebar-ring: 78.46 0.01% 63.02%;
+  --surface: 78.38 0.12% 97.41%;
+  --code-highlight: 78.36 0.10% 95.99%;
+  --code-number: 78.28 0.01% 48.87%;
+  --selection: 78.28 0.01% 3.94%;
+  --selection-foreground: 60 100% 100%;
+}
+
+.dark {
+  --background: 78.28 0.01% 3.94%;
+  --foreground: 78.28 0.26% 98.02%;
+  --card: 78.69 0.01% 9.05%;
+  --card-foreground: 78.28 0.26% 98.02%;
+  --popover: 78.33 0.05% 15.96%;
+  --popover-foreground: 78.28 0.26% 98.02%;
+  --primary: 78.33 0.05% 89.81%;
+  --primary-foreground: 78.69 0.01% 9.05%;
+  --secondary: 78.33 0.05% 15.96%;
+  --secondary-foreground: 78.28 0.26% 98.02%;
+  --muted: 78.33 0.05% 15.96%;
+  --muted-foreground: 78.46 0.01% 63.02%;
+  --accent: 78.32 0.01% 26.82%;
+  --accent-foreground: 78.28 0.26% 98.02%;
+  --destructive: 28.21 80.54% 50.12%;
+  --border: 60 100% 100% / 10%;
+  --input: 60 100% 100% / 15%;
+  --ring: 78.28 0.01% 45.15%;
+  --sidebar: 78.69 0.01% 9.05%;
+  --sidebar-foreground: 78.28 0.26% 98.02%;
+  --sidebar-primary: 219.68 62.44% 36.18%;
+  --sidebar-primary-foreground: 78.28 0.26% 98.02%;
+  --sidebar-accent: 78.33 0.05% 15.96%;
+  --sidebar-accent-foreground: 78.28 0.26% 98.02%;
+  --sidebar-border: 60 100% 100% / 10%;
+  --sidebar-ring: 78.28 0.01% 34.92%;
+  --surface: 78.29 0.01% 7.15%;
+  --surface-foreground: 78.46 0.01% 63.02%;
+  --code-highlight: 78.33 0.05% 15.18%;
+  --code-number: 78.41 0.13% 67.37%;
+  --selection: 78.33 0.05% 89.81%;
+  --selection-foreground: 78.69 0.01% 9.05%;
+}
+
+:root2 {
+  --background: lab(44.13% 67.65 53.29);
+  --foreground: lab(2.75381% 0 0);
+  --card: lab(100% 0 0);
+  --card-foreground: lab(2.75381% 0 0);
+  --popover: lab(100% 0 0);
+  --popover-foreground: lab(2.75381% 0 0);
+  --primary: lab(7.78201% -.0000149012 0);
+  --primary-foreground: lab(98.26% 0 0);
+  --secondary: lab(96.52% -.0000298023 .0000119209);
+  --secondary-foreground: lab(7.78201% -.0000149012 0);
+  --muted: lab(96.52% -.0000298023 .0000119209);
+  --muted-foreground: lab(48.496% 0 0);
+  --accent: lab(96.52% -.0000298023 .0000119209);
+  --accent-foreground: lab(7.78201% -.0000149012 0);
+  --destructive: lab(48.4493% 77.4328 61.5452);
+  --border: lab(90.952% 0 -.0000119209);
+  --input: lab(90.952% 0 -.0000119209);
+  --ring: lab(66.128% -.0000298023 .0000119209);
+  --sidebar: lab(98.26% 0 0);
+  --sidebar-foreground: lab(2.75381% 0 0);
+  --sidebar-primary: lab(7.78201% -.0000149012 0);
+  --sidebar-primary-foreground: lab(98.26% 0 0);
+  --sidebar-accent: lab(96.52% -.0000298023 .0000119209);
+  --sidebar-accent-foreground: lab(7.78201% -.0000149012 0);
+  --sidebar-border: lab(90.952% 0 -.0000119209);
+  --sidebar-ring: lab(66.128% -.0000298023 .0000119209);
+  --surface: lab(97.68% -.0000298023 .0000119209);
+  --code-highlight: lab(95.36% 0 0);
+  --code-number: lab(48.96% 0 0);
+  --selection: lab(2.75381% 0 0);
+  --selection-foreground: lab(100% 0 0);
+}
+
+.dark2{
+  --background: lab(2.75381% 0 0);
+  --foreground: lab(98.26% 0 0);
+  --card: lab(7.78201% -.0000149012 0);
+  --card-foreground: lab(98.26% 0 0);
+  --popover: lab(15.204% 0 -.00000596046);
+  --popover-foreground: lab(98.26% 0 0);
+  --primary: lab(90.952% 0 -.0000119209);
+  --primary-foreground: lab(7.78201% -.0000149012 0);
+  --secondary: lab(15.204% 0 -.00000596046);
+  --secondary-foreground: lab(98.26% 0 0);
+  --muted: lab(15.204% 0 -.00000596046);
+  --muted-foreground: lab(66.128% -.0000298023 .0000119209);
+  --accent: lab(27.036% 0 0);
+  --accent-foreground: lab(98.26% 0 0);
+  --destructive: lab(63.7053% 60.745 31.3109);
+  --border: lab(100% 0 0 / .1);
+  --input: lab(100% 0 0 / .15);
+  --ring: lab(48.496% 0 0);
+  --sidebar: lab(7.78201% -.0000149012 0);
+  --sidebar-foreground: lab(98.26% 0 0);
+  --sidebar-primary: lab(36.9089% 35.0961 -85.6872);
+  --sidebar-primary-foreground: lab(98.26% 0 0);
+  --sidebar-accent: lab(15.204% 0 -.00000596046);
+  --sidebar-accent-foreground: lab(98.26% 0 0);
+  --sidebar-border: lab(100% 0 0 / .1);
+  --sidebar-ring: lab(34.924% 0 0);
+  --surface: lab(7.22637% -.0000149012 0);
+  --surface-foreground: lab(66.128% -.0000298023 .0000119209);
+  --code-highlight: lab(15.32% 0 0);
+  --code-number: lab(67.52% -.0000298023 0);
+  --selection: lab(90.952% 0 -.0000119209);
+  --selection-foreground: lab(7.78201% -.00001490);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
