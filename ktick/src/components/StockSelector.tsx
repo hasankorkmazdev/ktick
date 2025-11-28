@@ -4,6 +4,7 @@ import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "c
 import { api, StockListItem } from "@/services/api";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "./ui/button";
+import { IconWrapper } from "./IconWrapper";
 
 interface StockSelectorProps {
     onSelect: (stock: StockListItem) => void;
@@ -60,7 +61,7 @@ export function StockSelector({ onSelect, selectedStocks }: StockSelectorProps) 
                         variant="outline"
                     >
                         <Plus className="w-5 h-5" />
-                        Stok Ekle
+                        
                     </Button>
                 </Dialog.Trigger>
             </Dialog.Trigger>
@@ -141,38 +142,60 @@ export function StockSelector({ onSelect, selectedStocks }: StockSelectorProps) 
                                             Sonuç bulunamadı
                                         </CommandEmpty>
                                         {stocks.map((stock) => {
-                                            const isSelected = selectedStocks.some(s => s.id === stock.id);
-                                            return (
-                                                <CommandItem
-                                                    key={stock.kod}
-                                                    value={`${stock.kod} ${stock.ad}`}
-                                                    onSelect={() => {
-                                                        if (!isSelected) {
-                                                            handleSelect(stock);
-                                                        }
-                                                    }}
-                                                    className={`
-                                                    flex items-center justify-between px-3 py-3 rounded-lg cursor-pointer transition-all duration-200 mb-1
-                                                    ${isSelected
-                                                            ? 'bg-primary/10 border border-primary/30 shadow-sm'
-                                                            : 'hover:bg-accent border border-transparent'
-                                                        }
-                                                `}
-                                                >
-                                                    <div className="flex flex-col">
-                                                        <span className="font-semibold text-sm text-foreground">{stock.kod}</span>
-                                                        <span className="text-xs text-muted-foreground">{stock.ad}</span>
-                                                    </div>
-                                                    {isSelected && (
-                                                        <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                                            <svg className="w-3 h-3 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                                            </svg>
-                                                        </div>
-                                                    )}
-                                                </CommandItem>
-                                            );
-                                        })}
+    const isSelected = selectedStocks.some(s => s.id === stock.id);
+    return (
+        <CommandItem
+            key={stock.code}
+            value={`${stock.code} ${stock.name}`}
+            onSelect={() => {
+                if (!isSelected) {
+                    handleSelect(stock);
+                }
+            }}
+            className={`
+                flex items-center justify-between px-3 py-3 rounded-lg cursor-pointer 
+                transition-all duration-200 mb-1
+                ${isSelected
+                    ? 'bg-primary/10 border border-primary/30 shadow-sm'
+                    : 'hover:bg-accent border border-transparent'
+                }
+            `}
+        >
+            {/* SOL TARAF */}
+            <div className="flex items-center gap-3">
+                {/* Yuvarlak Icon Alanı */}
+                 <IconWrapper stock={stock} />
+                   
+
+                {/* CODE + NAME */}
+                <div className="flex flex-col">
+                    <span className="font-semibold text-sm text-foreground">{stock.code}</span>
+                    <span className="text-xs text-muted-foreground">{stock.name}</span>
+                </div>
+            </div>
+
+            {/* SAĞDA TİK */}
+            {isSelected && (
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                    <svg
+                        className="w-3 h-3 text-primary-foreground"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M5 13l4 4L19 7"
+                        />
+                    </svg>
+                </div>
+            )}
+        </CommandItem>
+    );
+})}
+
                                     </>
                                 )}
                             </CommandList>

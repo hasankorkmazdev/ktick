@@ -9,23 +9,24 @@ export async function openDB() {
   });
 }
 
-// tabloları oluştur
-// tabloları oluştur
 export async function initDB() {
     const db = await openDB();
+
     await db.exec(`
       CREATE TABLE IF NOT EXISTS stocks (
         id INTEGER PRIMARY KEY,
-        kod TEXT,
-        ad TEXT,
-        exchange TEXT,
-        icon TEXT
+        code TEXT NOT NULL,
+        name TEXT NOT NULL,
+        exchange TEXT NOT NULL,
+        type TEXT NOT NULL,
+        icon TEXT NOT NULL
       )
     `);
+
     await db.exec(`
       CREATE TABLE IF NOT EXISTS last_update (
         id INTEGER PRIMARY KEY,
         updated_at TIMESTAMP
       )
     `);
-  }
+}

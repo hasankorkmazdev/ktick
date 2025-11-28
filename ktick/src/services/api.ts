@@ -1,8 +1,9 @@
 export interface StockListItem {
     id: number;
-    kod: string;
-    ad: string;
-    tip: string;
+    code: string;
+    name: string;
+    type: string;
+    icon: string;
     exchange: string;
 }
 
@@ -54,16 +55,16 @@ export const api = {
       
         try {
             console.log(stock)
-            const response = await fetch(`${BASE_URL}/${stock.exchange}/getprice?code=${stock.kod}`);
+            const response = await fetch(`${BASE_URL}/${stock.exchange}/getprice?code=${stock.code}`);
             console.log(response);
             if (!response.ok) {
-                throw new Error(`Failed to fetch price for ${stock.kod}`);
+                throw new Error(`Failed to fetch price for ${stock.code}`);
             }
             const data = await response.json();
             console.log(data);
             return data
         } catch (error) {
-            console.error(`Error fetching price for ${stock.kod}:`, error);
+            console.error(`Error fetching price for ${stock.code}:`, error);
             throw error;
         }
     }

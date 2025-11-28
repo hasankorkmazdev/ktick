@@ -2,24 +2,27 @@ import { useState } from "react";
 import { Activity } from "lucide-react";
 
 interface IconWrapperProps {
-  data: {
+  stock: {
     icon?: string;
+    name?: string;
+    code?: string;
   };
 }
 
-export const IconWrapper = ({ data }: IconWrapperProps) => {
+export const IconWrapper = ({ stock }: IconWrapperProps) => {
   const [imgError, setImgError] = useState(false);
-    data.icon="https://logo.clearbit.com/bim.com.tr";
-  const showImage = data.icon && !imgError;
-
+  const showImage = stock.icon && !imgError;
+  console.log(showImage)
   return (
-    <div className="rounded-full w-10 h-10 flex items-center justify-center  text-primary-foreground">
+    <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center overflow-hidden">
       {showImage ? (
-        <img
-          src={data.icon}
-          alt="icon"
-          className="rounded-full"
-          onError={() => setImgError(true)}
+        <img id={stock.code}
+          src={stock.icon}
+          alt={stock.name}
+          className="w-full h-full object-cover rounded-full"
+          onError={(e) => {
+            setImgError(true)
+          }}
         />
       ) : (
         <Activity className="w-5 h-5" />

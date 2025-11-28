@@ -77,8 +77,8 @@ function App() {
               <Activity className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Borsa Takip</h1>
-              <p className="text-sm text-muted-foreground">Canlı hisse senedi verileri</p>
+              <h1 className="text-2xl font-bold tracking-tight">KTicker</h1>
+              <p className="text-sm text-muted-foreground">Enstrüman ve Pörtföy Yönetimi</p>
             </div>
           </div>
 
@@ -93,13 +93,13 @@ function App() {
             <IntervalSelector intervalMs={intervalMs} onChange={setIntervalMs} />
             <StockSelector onSelect={handleSelectStock} selectedStocks={selectedStocks} />
              {/* Görünüm toggle */}
-             <button
+             <Button id="qqq"
+             variant={"outline"}
               onClick={() => setViewMode(prev => prev === "card" ? "row" : "card")}
-              className="p-2 border rounded-md hover:bg-muted/5"
               title="Görünümü değiştir"
             >
               {viewMode === "card" ? <LayoutList className="w-5 h-5"/> : <LayoutGrid className="w-5 h-5"/>}
-            </button>
+            </Button>
           </div>
         </div>
 

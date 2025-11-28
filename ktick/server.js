@@ -25,8 +25,8 @@ app.get("/api/bist/search", async (req, res) => {
     if (query) {
       stocks = stocks.filter(
         (item) =>
-          item.ad.toLowerCase().includes(query) ||
-          item.kod.toLowerCase().includes(query)
+          item.name.toLowerCase().includes(query) ||
+          item.code.toLowerCase().includes(query)
       );
     }
 
@@ -49,7 +49,7 @@ app.get("/api/bist/getprice", async (req, res) => {
     try {
       // 1. DB'den hisse bilgilerini çek
       const db = await openDB();
-      const stockFromDB = await db.get(`SELECT kod, ad, exchange, icon FROM stocks WHERE kod = ?`, [code]);
+      const stockFromDB = await db.get(`SELECT code, name,type, exchange, icon FROM stocks WHERE code = ?`, [code]);
   
       // 2. API'den fiyat bilgilerini çek
       const url = `https://api.getlaplace.com/api/v2/stock/stats?symbols=${code}&region=tr&api_key=${API_KEY}`;
@@ -60,7 +60,7 @@ app.get("/api/bist/getprice", async (req, res) => {
       // 3. DB ve API verilerini birleştir
       const stockDetail = {
         code: stockRaw.symbol,
-        name: stockFromDB?.ad ?? "",
+        name: stockFromDB?.name ?? "",
         exchange: stockFromDB?.exchange ?? "",
         icon: stockFromDB?.icon ?? "",
         open: stockRaw.dayOpen,

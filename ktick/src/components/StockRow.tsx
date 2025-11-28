@@ -21,7 +21,7 @@ export function StockRow({ data, onRemove }: StockRowProps) {
             {/* Icon ve code/name */}
             <div className="flex ">
                 <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center mb-1">
-                <IconWrapper data={{ icon: data.icon }} />
+                <IconWrapper stock={data} />
                 </div>
                 <div className="ms-3 flex flex-col">
                     <div className="font-bold">{data.code}</div>
