@@ -12,7 +12,6 @@ interface IconWrapperProps {
 export const IconWrapper = ({ stock }: IconWrapperProps) => {
   const [imgError, setImgError] = useState(false);
   const showImage = stock.icon && !imgError;
-  console.log(showImage)
   return (
     <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center overflow-hidden">
       {showImage ? (
