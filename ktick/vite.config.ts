@@ -16,6 +16,9 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
+    strictPort: false,
+    allowedHosts: true,  // 🔥 tüm hostlara izin ver
     proxy: {
       '/api': {
         target: 'http://localhost:3001',

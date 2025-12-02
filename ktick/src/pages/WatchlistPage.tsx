@@ -34,7 +34,8 @@ export function WatchlistPage() {
     const handleRemoveStock = (code: string) => {
         removeStock(code);
     };
-
+    console.log(stockData)
+    console.log(selectedStocks)
     return (
         <div className="space-y-6">
             {/* Watchlist Controls */}

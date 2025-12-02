@@ -51,7 +51,6 @@ export function PortfolioPage() {
 
     // Only group holdings if we have price data
     const hasPriceData = Object.keys(stockPrices).length > 0;
-    console.log(stockPrices)
     const groupedHoldings = hasPriceData ? {
         BIST: holdings.filter(h => {
             const exchange = stockPrices[h.code]?.exchange || "";

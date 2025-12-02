@@ -28,7 +28,8 @@ export function PortfolioRow({ item, currentPrice, onEdit, onDelete }: Portfolio
             <td className="px-4 py-3 text-right font-medium">
                 {value.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
             </td>
-            <td className={`px-4 py-3 text-right font-medium ${pl >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <td className={`px-4 py-3 text-right font-medium ${pl === 0 ? 'text-muted-foreground' : pl > 0 ? 'text-green-500' : 'text-red-500'
+                }`}>
                 {pl.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                 <div className="text-xs opacity-80">%{plPercent.toFixed(2)}</div>
             </td>

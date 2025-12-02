@@ -80,7 +80,7 @@ async function syncCurrencyAndCommodityData() {
         const items = [];
 
         const currencyCodes = [
-            "USD", "EUR", "GBP", "CHF",
+            "TRY", "USD", "EUR", "GBP", "CHF",
             "CAD", "RUB", "AED", "AUD",
             "DKK", "SEK", "NOK", "JPY",
             "KWD", "ZAR", "BHD", "LYD",
@@ -96,6 +96,15 @@ async function syncCurrencyAndCommodityData() {
             "PKR", "QAR", "RSD", "SGD",
             "SYP", "THB", "TWD", "UAH",
             "UYU", "GEL", "TND", "BGN"];
+
+        // TRY'yi manuel ekle (API'de yok)
+        items.push({
+            code: "TRY",
+            name: "Türk Lirası",
+            exchange: "DOVIZ",
+            type: "Currency",
+            icon: "https://flagcdn.com/w40/tr.png"
+        });
 
         for (const code of currencyCodes) {
             if (data[code] && data[code].Type === "Currency") {
@@ -168,17 +177,19 @@ async function fetchBistPrices() {
 
             try {
                 const response = await fetch(url);
-
                 if (!response.ok) continue;
 
                 const data = await response.json();
-
                 if (!Array.isArray(data)) continue;
 
-                for (let j = 0; j < batch.length; j++) {
-                    const stock = batch[j];
-                    const stockRaw = data[j];
+                // 🔍 API veri setini code -> record map’ine dönüştür
+                const map = new Map(
+                    data.map(item => [item.symbol, item])
+                );
 
+                // 🔁 Batch içindeki her stock için code ile eşleşme yap
+                for (const stock of batch) {
+                    const stockRaw = map.get(stock.code);
                     if (!stockRaw) continue;
 
                     const priceData = {
@@ -199,13 +210,14 @@ async function fetchBistPrices() {
                         buying: stockRaw.latestPrice,
                         selling: stockRaw.latestPrice
                     };
+                    console.log("BİST")
 
                     await repo.savePrice(priceData);
                     successCount++;
                 }
 
             } catch (error) {
-                // batch bazlı hata — sessiz geç
+                // Batch hatası — sessiz geç
             }
         }
 
@@ -216,46 +228,55 @@ async function fetchBistPrices() {
 }
 
 
-// Fetch BINANCE prices
 async function fetchBinancePrices() {
     try {
+        // DB'den tüm Binance stoklarını çek
         const binanceStocks = await repo.searchStocks("BINANCE", "");
         console.log(`📊 Fetching BINANCE prices for ${binanceStocks.length} stocks...`);
+
+        // Binance'ten tek seferde tüm ticker'lar
+        const response = await fetch("https://api.binance.com/api/v3/ticker/24hr");
+        if (!response.ok) throw new Error("Failed to fetch Binance ticker data");
+        const allData = await response.json();
+
+        // TRY çiftlerini filtrele
+        const tryData = allData.filter(item => item.symbol.endsWith("TRY"));
+
+        // Stock listemizi Map'e çevir, hızlı eşleştirme için
+        const stockMap = new Map();
+        for (const stock of binanceStocks) {
+            stockMap.set(stock.code.toUpperCase(), stock);
+        }
+
         let successCount = 0;
 
-        for (const stock of binanceStocks) {
-            try {
-                const code = stock.code;
-                const url = `https://api.binance.com/api/v3/ticker/24hr?symbol=${code}TRY`;
-                const response = await fetch(url);
+        for (const data of tryData) {
+            const code = data.symbol.replace("TRY", "");
+            const stock = stockMap.get(code);
+            if (!stock) continue; // DB'de olmayanları atla
 
-                if (response.ok) {
-                    const data = await response.json();
-                    const priceData = {
-                        code: code,
-                        name: stock.name,
-                        exchange: "BINANCE",
-                        icon: stock.icon,
-                        open: Number(data.openPrice),
-                        close: Number(data.prevClosePrice),
-                        high: Number(data.highPrice),
-                        low: Number(data.lowPrice),
-                        last: Number(data.lastPrice),
-                        daily_change_price: Number(data.priceChange),
-                        daily_change_percent: Number(data.priceChangePercent),
-                        volume_turkish_lira: Number(data.quoteVolume),
-                        volume_lot: Number(data.volume),
-                        volatility: 0,
-                        buying: Number(data.bidPrice),
-                        selling: Number(data.askPrice)
-                    };
+            const priceData = {
+                code: code,
+                name: stock.name,
+                exchange: "BINANCE",
+                icon: stock.icon,
+                open: Number(data.openPrice),
+                close: Number(data.prevClosePrice),
+                high: Number(data.highPrice),
+                low: Number(data.lowPrice),
+                last: Number(data.lastPrice),
+                daily_change_price: Number(data.priceChange),
+                daily_change_percent: Number(data.priceChangePercent),
+                volume_turkish_lira: Number(data.quoteVolume),
+                volume_lot: Number(data.volume),
+                volatility: 0,
+                buying: Number(data.bidPrice),
+                selling: Number(data.askPrice)
+            };
 
-                    await repo.savePrice(priceData);
-                    successCount++;
-                }
-            } catch (error) {
-                // Silently skip individual errors
-            }
+            // DB'ye kaydet
+            await repo.savePrice(priceData);
+            successCount++;
         }
 
         console.log(`✅ BINANCE: Cached ${successCount}/${binanceStocks.length} prices`);
@@ -263,6 +284,7 @@ async function fetchBinancePrices() {
         console.error("Error in fetchBinancePrices:", error);
     }
 }
+
 
 // Fetch DOVIZ and EMTIA prices (they use the same API)
 async function fetchDovizEmtiaPrices() {
@@ -281,9 +303,38 @@ async function fetchDovizEmtiaPrices() {
         if (response.ok) {
             const data = await response.json();
 
+            // TRY için manuel fiyat ekle (API'de yok)
+            const tryStock = allStocks.find(s => s.code === "TRY");
+            if (tryStock) {
+                const tryPriceData = {
+                    code: "TRY",
+                    name: tryStock.name,
+                    exchange: "DOVIZ",
+                    icon: tryStock.icon,
+                    open: null,
+                    close: null,
+                    high: 1.00,
+                    low: 1.00,
+                    last: 1.00,
+                    daily_change_price: 0,
+                    daily_change_percent: 0,
+                    volume_turkish_lira: null,
+                    volume_lot: null,
+                    volatility: 0,
+                    buying: 1.00,
+                    selling: 1.00
+                };
+                await repo.savePrice(tryPriceData);
+                successCount++;
+            }
+
             for (const stock of allStocks) {
                 try {
                     const code = stock.code;
+
+                    // TRY'yi atla, zaten yukarıda ekledik
+                    if (code === "TRY") continue;
+
                     const item = data[code];
 
                     if (item) {
@@ -305,7 +356,7 @@ async function fetchDovizEmtiaPrices() {
                             buying: item.Buying,
                             selling: item.Selling
                         };
-
+                        console.log("EMTİA")
                         await repo.savePrice(priceData);
                         successCount++;
                     }
@@ -353,7 +404,7 @@ export function startSchedulers() {
     // Price fetching every 10 seconds
     setInterval(async () => {
         await fetchAndCachePrices();
-    }, 60 * 1000);
+    }, 300 * 1000);
 
     // Initial price fetch after 2 seconds
     setTimeout(() => {

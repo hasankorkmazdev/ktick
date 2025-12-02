@@ -47,7 +47,6 @@ export const usePortfolioStore = create<PortfolioState>((set, get) => ({
         for (const item of items) {
             try {
                 const detail = await api.getStockPrice(item.code);
-                console.log(detail)
                 prices[item.code] = detail;
             } catch (error) {
                 console.error(`Failed to fetch price for ${item.code}`, error);

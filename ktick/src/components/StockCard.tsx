@@ -15,7 +15,7 @@ export function StockCard({ data, onRemove }: StockCardProps) {
     dayjs.extend(relativeTime);
     dayjs.locale("tr");
     const isPositive = data.daily_change_percent >= 0;
-
+    console.log(data);
     return (
         <Card className="group relative overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5">
             <Button
@@ -71,7 +71,7 @@ export function StockCard({ data, onRemove }: StockCardProps) {
                             {(data?.volume_lot ?? 0).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                     </div>
-                  {/*   <div className="flex justify-between">
+                    {/*   <div className="flex justify-between">
                         <span>Saat:</span>
                         <span className="font-medium text-foreground">
                             {data.last_update

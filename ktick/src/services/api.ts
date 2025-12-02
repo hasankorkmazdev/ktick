@@ -94,7 +94,6 @@ export const api = {
                 throw new Error(`Failed to fetch price for ${code}`);
             }
             const data = await response.json();
-            console.log(data)
             return data
         } catch (error) {
             console.error(`Error fetching price for ${code}:`, error);

@@ -61,7 +61,7 @@ export const useWatchlistStore = create<WatchlistState>()(
 
                 for (const stock of selectedStocks) {
                     try {
-                        const detail = await api.getStockPrice(stock);
+                        const detail = await api.getStockPrice(stock.code);
                         data.push(detail);
                     } catch (error) {
                         console.error(`Failed to fetch ${stock.code}:`, error);
