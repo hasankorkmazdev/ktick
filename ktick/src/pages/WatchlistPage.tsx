@@ -27,8 +27,8 @@ export function WatchlistPage() {
         return () => stopWatchlistRefresh();
     }, []);
 
-    const handleSelectStock = (stock: StockListItem) => {
-        addStock(stock);
+    const handleSelectStock = async (stock: StockListItem) => {
+        await addStock(stock);
     };
 
     const handleRemoveStock = (code: string) => {

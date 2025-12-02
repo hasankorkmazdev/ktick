@@ -11,7 +11,7 @@ interface WatchlistState {
     viewMode: "card" | "row";
 
     // Actions
-    addStock: (stock: StockListItem) => void;
+    addStock: (stock: StockListItem) => Promise<void>;
     removeStock: (code: string) => void;
     setIntervalMs: (ms: number) => void;
     setViewMode: (mode: "card" | "row") => void;
@@ -30,10 +30,12 @@ export const useWatchlistStore = create<WatchlistState>()(
             viewMode: "card",
 
             // Add Stock
-            addStock: (stock: StockListItem) => {
-                const { selectedStocks } = get();
+            addStock: async (stock: StockListItem) => {
+                const { selectedStocks, fetchStockData } = get();
                 if (!selectedStocks.find(s => s.code === stock.code)) {
                     set({ selectedStocks: [...selectedStocks, stock] });
+                    // Immediately fetch data for the new stock
+                    await fetchStockData();
                 }
             },
 
